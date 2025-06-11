@@ -10,6 +10,8 @@
 #include "eddi_density_field.h"
 #include "eddi_molecule.h"
 
+EDDI_HEADER_OPEN
+
 /**
  * @brief Reads a binary file containing a density field, initializing the density field
  * 
@@ -31,6 +33,7 @@ bool eddi_read_binary(const char* filename, eddi_density_field_t* density_field)
  */
 bool eddi_read_gaussian_cube(const char* filename, eddi_density_field_t* density_field, eddi_molecule_t* molecule);
 
+EDDI_HEADER_CLOSE
 
 #endif // __EDDI_DENSITY_READERS_H__
 

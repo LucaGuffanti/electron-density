@@ -81,3 +81,18 @@ add_eddi_test_with_input_file(test_9jt3.c ${EDDI_INPUT_DATA_DIR}/9jt3.pdb 9jt3_$
 add_eddi_test_with_input_file(test_9mxc.c ${EDDI_INPUT_DATA_DIR}/9mxc.pdb 9mxc_${DENSITY_FUNCTION}.cube 9mxc_${DENSITY_FUNCTION}.bin)
 
 add_eddi_test_with_input_dir(benchmark_algs.c ${EDDI_INPUT_DATA_DIR}/benchmark)
+
+# Tests for the Eddi-g Library
+if (NOT EDDI_CUDA_FOUND)
+    message(STATUS "Skipping EDDI-GPU tests.")
+else()
+    message(STATUS "CUDA found. Building EDDI-G tests.")
+    add_eddi_test(gpu_molecule_transformation.c)
+    add_eddi_test(bench_ALL_BINS.c)
+    add_eddi_test(bench_ALL_POINTS.c)
+    add_eddi_test(bench_ATOM_BASED.c)
+    add_eddi_test(bench_ONE_BLOCK_PER_BIN.c)
+    add_eddi_test(bench_OPT_ONE_BLOCK_PER_BIN.c)
+    add_eddi_test(gpu_read_coord.c)
+
+endif()

@@ -12,9 +12,7 @@
 #include "uthash.h"
 #include "time.h"
 
-#ifdef _OPENMP
-#include "omp.h"
-#endif
+EDDI_HEADER_OPEN
 
 /**
  * @brief Type of a 3D density field. 
@@ -149,5 +147,7 @@ double eddi_compute_volume(eddi_density_field_t* density_field, eddi_real_t isod
  * @param density_field density field to be deallocated
  */
 void eddi_free_density_field(eddi_density_field_t* density_field);
+
+EDDI_HEADER_CLOSE
 
 #endif // __EDDI_DENSITY_FIELD_H__

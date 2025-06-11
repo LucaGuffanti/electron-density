@@ -14,6 +14,8 @@
 #include "eddi_base_includes.h"
 #include "eddi_density_functions.h"
 
+EDDI_HEADER_OPEN
+
 /**
  * @brief Mapping between symbol and number to be added as an element of
  * a hashmap to ease data retrieval.
@@ -65,5 +67,7 @@ eddi_atomic_number_t eddi_symbol_to_number(const char* symbol);
  * @brief Frees the utility structures that have been allocated
  */
 void eddi_free_atomic_data();
+
+EDDI_HEADER_CLOSE
 
 #endif // __EDDI_ATOMIC_DATA_H__

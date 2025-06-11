@@ -11,6 +11,7 @@
 #include "eddi_base_includes.h"
 #include "math.h"
 
+EDDI_HEADER_OPEN
 
 #ifdef EDDI_SLATER_WF
 #define EDDI_N_SLATER_DENSITIES 26
@@ -22,6 +23,7 @@ extern eddi_real_t (*eddi_densities[EDDI_N_SLATER_DENSITIES])(eddi_real_t, eddi_
 extern eddi_real_t (*eddi_densities[EDDI_N_CLEMENTI_DENSITIES])(eddi_real_t, eddi_real_t, eddi_real_t);
 #endif
 
+EDDI_HEADER_CLOSE
 
 
 #endif // __EDDI_DENSITY_FUNCTIONS__

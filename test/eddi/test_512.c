@@ -9,7 +9,6 @@ int main(int argc, char** argv)
 {
     eddi_molecule_t molecule;
     eddi_density_field_t density_field;
-
     
     eddi_read_gaussian_cube(argv[1], &density_field, &molecule);
     eddi_init_field_from_molecule(&density_field, &molecule, 1.0, 0.5, 0.5, 0.5);

@@ -13,12 +13,12 @@
 #include "stdbool.h"
 #include "complex.h"
 
+EDDI_HEADER_OPEN
 
 /**
  * Definition of the type of floating point number
  */
 
-#define EDDI_HIGH_PRECISION
 
 #ifdef EDDI_HIGH_PRECISION 
 #define EDDI_FLOATING_POINT_TYPE double
@@ -30,11 +30,6 @@
  * @brief Type of the real numbers.
  */
 typedef EDDI_FLOATING_POINT_TYPE eddi_real_t;
-
-/**
- * @brief Type of the complex numbers.
- */
-typedef EDDI_FLOATING_POINT_TYPE complex eddi_complex_t;
 
 /**
  * @brief Type of the size of containers.
@@ -70,5 +65,16 @@ typedef struct {
     eddi_real_t high_cutoff_radius;
     eddi_real_t low_cutoff_radius;
 } eddi_cutoff_data_t;
+
+typedef struct {
+    eddi_real_t min_x;
+    eddi_real_t max_x;
+    eddi_real_t min_y;
+    eddi_real_t max_y;
+    eddi_real_t min_z;
+    eddi_real_t max_z;
+} eddi_molecule_boundary_t;
+
+EDDI_HEADER_CLOSE
 
 #endif // __EDDI_TYPES_H__

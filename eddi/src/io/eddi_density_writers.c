@@ -68,7 +68,10 @@ bool eddi_write_gaussian_cube(const char* filename, const eddi_density_field_t* 
     const eddi_size_t ny = density_field->y_size;
     const eddi_size_t nz = density_field->z_size;
 
-    // Finally, the list of electron densities
+    // Finally, the list of electron densities with percentage completion
+    eddi_size_t total_voxels = nx * ny * nz;
+    eddi_size_t processed_voxels = 0;
+
     for (eddi_size_t ix = 0; ix < nx; ++ix)
     {
         for (eddi_size_t iy = 0; iy < ny; ++iy)
@@ -78,10 +81,19 @@ bool eddi_write_gaussian_cube(const char* filename, const eddi_density_field_t* 
                 fprintf(fp, "%.5lE ", density_field->field[ix * nz * ny + iy * nz + iz]);
                 if (iz % 6 == 5)
                     fprintf(fp, "\n");
+
+                // Update and print percentage completion
+                processed_voxels++;
+                if (processed_voxels % (total_voxels / 100) == 0)
+                {
+                    printf("\rProgress: %zu%%", (processed_voxels * 100) / total_voxels);
+                    fflush(stdout);
+                }
             }
             fprintf(fp, "\n");
         }
     }
+    printf("\rProgress: 100%%\n"); // Ensure 100% is printed at the end
 
     fclose(fp);
     return EDDI_RETURN_SUCCESS;

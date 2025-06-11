@@ -11,6 +11,8 @@
 #include "eddi_input_atom_list.h"
 #include "eddi_density_functions.h"
 
+EDDI_HEADER_OPEN
+
 /**
  * @brief of a molecule (Structure of Arrays).
  */
@@ -73,5 +75,7 @@ void eddi_print_molecule(eddi_molecule_t* molecule);
  * @brief Frees the memory allocated to a molecule
  */
 void eddi_free_molecule(eddi_molecule_t* molecule);
+
+EDDI_HEADER_CLOSE
 
 #endif // __EDDI_MOLECULE_H__

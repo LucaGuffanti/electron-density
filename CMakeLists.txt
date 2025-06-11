@@ -4,24 +4,12 @@ cmake_policy(SET CMP0079 NEW)
 cmake_policy(SET CMP0104 NEW)
 
 # Set project version
-project(EDDI VERSION 1.0.0 LANGUAGES C)
+project(EDDI VERSION 1.0.0 LANGUAGES C CUDA)
 
-# Set minimum required version of CMake
 
 # Set C standards
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED ON)
-
-# Include directories
-set(INCLUDE_DIRECTORIES
-    ${CMAKE_CURRENT_SOURCE_DIR}/include
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/io
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/density_field
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/molecule
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/util
-    ${CMAKE_CURRENT_SOURCE_DIR}/include/density
-)
-
 
 # Option to build tests
 option(BUILD_SHARED_LIB "Build EDDI as a shared library" ON)
@@ -41,6 +29,10 @@ if(NOT CMAKE_BUILD_TYPE)
 set(CMAKE_BUILD_TYPE "Release" CACHE STRING "Choose the type of build (Debug, Release, Profile)." FORCE)
 set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "Profile")
 endif()
+
+
+find_package(CUDA QUIET)
+set(EDDI_CUDA_FOUND ${CUDA_FOUND})
 
 
 # Eddi Library (CPU-Based with OpenMP)
@@ -74,6 +66,9 @@ elseif(CMAKE_BUILD_TYPE STREQUAL "Profile")
 
     # Profiling mode configuration
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g -O3 -Wall -Wextra -g")
+    if(EDDI_CUDA_FOUND)
+        set(CMAKE_CUDA_FLAGS "${CMAKE_CUDA_FLAGS} -g -O3")
+    endif()
 
 else()
     message(STATUS "Release mode activated")
@@ -83,21 +78,6 @@ else()
     
 endif()
 
-# Find CUDA if available
-find_package(CUDA QUIET)
-
-# Eddi-g Library (GPU Accelerated with CUDA)
-if (NOT CUDA_FOUND)
-    message(WARNING "CUDA not found. Please install CUDA to build EDDI-G.")
-else()
-    message(STATUS "CUDA found. Building EDDI-G.")
-    # Add the source directory
-    add_subdirectory(eddi-g)
-
-endif()
-
-
-
 
 # Add tests if BUILD_TESTS is ON
 if(BUILD_TESTS)
@@ -106,3 +86,5 @@ if(BUILD_TESTS)
     add_subdirectory(test)
     message(STATUS "=== Tests configured ===")
 endif()
+
+add_subdirectory(tools)

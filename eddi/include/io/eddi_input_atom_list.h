@@ -12,6 +12,7 @@
 #include "eddi_base_includes.h"
 #include "eddi_atomic_data.h"
 
+EDDI_HEADER_OPEN 
 /**
  * @brief List representing atomic species in input files
  * 
@@ -60,5 +61,7 @@ bool eddi_add_atom_to_list_atomic_number(eddi_input_atom_list_t** list, const ed
  * @param list input atom list
  */
 void eddi_free_input_atom_list(eddi_input_atom_list_t* list);
+
+EDDI_HEADER_CLOSE
 
 #endif // __EDDI_INPUT_ATOM_LIST_H__

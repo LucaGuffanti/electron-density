@@ -9,6 +9,8 @@
 
 #include "eddi_molecule.h"
 
+EDDI_HEADER_OPEN
+
 /**
  * @brief Reads a PDB file containing molecular information and stores the molecule
  * in a molecule descriptor
@@ -20,6 +22,7 @@
  */
 bool eddi_read_pdb(const char* filename, eddi_molecule_t* molecule);
 
+
 /**
  * @brief Reads a MOL/SDF file containing molecular information and stores the molecule
  * in a molecule descriptor
@@ -30,5 +33,7 @@ bool eddi_read_pdb(const char* filename, eddi_molecule_t* molecule);
  * @return false if any problem occurs during the reading operation
  */
 bool eddi_read_mol(const char* filename, eddi_molecule_t* molecule);
+
+EDDI_HEADER_CLOSE
 
 #endif // __EDDI_MOLECULE_READERS_H__

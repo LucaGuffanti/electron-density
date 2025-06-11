@@ -1,13 +1,66 @@
 message(STATUS "=== Configuring EDDI ===")
 
 # Collect all source files
+
 file(GLOB_RECURSE SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/*.c")
+file(GLOB_RECURSE GPU_C_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/gpu/*.c")
+
+# Print the list of source files
+foreach(SOURCE_FILE ${SOURCES})
+    message(STATUS "Source file: ${SOURCE_FILE}")
+endforeach()
+
+# Print the list of GPU C source files
+foreach(GPU_SOURCE_FILE ${GPU_C_SOURCES})
+    message(STATUS "GPU C source file: ${GPU_SOURCE_FILE}")
+endforeach()
+
+# Check for CUDA
+
+
+if (EDDI_CUDA_FOUND)
+message(STATUS "CUDA found, searching for .cu files")
+    file(GLOB_RECURSE CUDA_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/*.cu")
+
+    list(APPEND SOURCES ${CUDA_SOURCES})
+
+    # Print the list of source files
+    foreach(SOURCE_FILE ${SOURCES})
+    message(STATUS "Source file: ${SOURCE_FILE}")
+    endforeach()
+    
+    # Enable separable compilation for CUDA
+else()
+    list(REMOVE_ITEM SOURCES ${GPU_C_SOURCES})
+    message(STATUS "CUDA not found, skipping .cu files")
+endif()
 
 # Create shared or static library
 if (BUILD_SHARED_LIB)
     message(STATUS "Configuring EDDI as a shared library")
     add_library(EDDI SHARED ${SOURCES})
+
+    # Set CUDA properties for shared library
+    if (EDDI_CUDA_FOUND)
+        set_target_properties(EDDI PROPERTIES CUDA_SEPARABLE_COMPILATION ON)
+        set_target_properties(EDDI PROPERTIES CUDA_RESOLVE_DEVICE_SYMBOLS ON)
+        set_target_properties(EDDI PROPERTIES CUDA_ARCHITECTURES "80;86")
+        set_target_properties(EDDI PROPERTIES POSITION_INDEPENDENT_CODE ON)
+
+        # Suppressing deprecated warning for GPU 
+        set_target_properties(EDDI PROPERTIES CUDA_PROPAGATE_HOST_FLAGS OFF)
+        target_compile_options(EDDI PRIVATE $<$<COMPILE_LANGUAGE:CUDA>:-O3 -diag-suppress 2464>)
+        
+        message(STATUS "Linking CUDA Toolkit libraries")
+        find_package(CUDAToolkit REQUIRED)
+        target_link_libraries(EDDI PUBLIC CUDA::cudart)
+    endif()
+    # Set shared library properties
+
 else()
+    if (EDDI_CUDA_FOUND)
+        message(FATAL_ERROR "Cannot build the CUDA part as a static library. Please set BUILD_SHARED_LIB to ON.")
+    endif()
     message(STATUS "Configuring EDDI as a static library")
     add_library(EDDI STATIC ${SOURCES})
 endif()
@@ -44,8 +97,11 @@ else()
 endif()
 
 # Include directories
-target_include_directories(EDDI PUBLIC ${EDDI_INCLUDE_DIRECTORIES})
-
+if (EDDI_CUDA_FOUND)
+    target_include_directories(EDDI PUBLIC ${EDDI_GPU_INCLUDE_DIRECTORIES})
+else()
+    target_include_directories(EDDI PUBLIC ${EDDI_INCLUDE_DIRECTORIES})
+endif()
 # Link math library
 target_link_libraries(EDDI PRIVATE m)
 

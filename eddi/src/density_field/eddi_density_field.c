@@ -378,6 +378,7 @@ void eddi_compute_density_field_cl(eddi_density_field_t* density_field, eddi_mol
     }
 
     // Now copy the atom data in the cells
+    double start_time = omp_get_wtime(); // Start timing
     for (eddi_size_t i = 0; i < molecule->n_atoms; ++i)
     {
         const eddi_size_t cell_x = (eddi_size_t)floor(((molecule->atoms_x[i] - density_field->origin.x) / c_x));
@@ -397,6 +398,8 @@ void eddi_compute_density_field_cl(eddi_density_field_t* density_field, eddi_mol
         cells[cell_idx].density[occupancy[cell_idx]] = molecule->density[i];
         occupancy[cell_idx]++;
     } 
+    double end_time = omp_get_wtime(); // End timing
+    printf("Time taken for atom-to-cell assignment: %f seconds\n", end_time - start_time);
 
     // printf("Cell list with %zu cells. %zu each\n", nc_tot, c_n_atoms);
 

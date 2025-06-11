@@ -10,6 +10,8 @@
 #include "eddi_density_field.h"
 #include "eddi_molecule.h"
 
+EDDI_HEADER_OPEN
+
 /**
  * @brief Writes the density field to a binary file with the following format
  * dx dy dz
@@ -41,5 +43,6 @@ bool eddi_write_binary(const char* filename, const eddi_density_field_t* density
  */
 bool eddi_write_gaussian_cube(const char* filename, const eddi_density_field_t* density_field, const eddi_molecule_t* molecule);
 
+EDDI_HEADER_CLOSE
 
 #endif // __EDDI_DENSITY_WRITERS_H__

@@ -14,7 +14,14 @@
 #else
     #define EDDI_DEBUG_PRINT(...)
     #define EDDI_DEBUG_CALL(...)
+#endif
 
+#ifdef __cplusplus
+    #define EDDI_HEADER_OPEN extern "C" {
+    #define EDDI_HEADER_CLOSE }
+#else
+    #define EDDI_HEADER_OPEN 
+    #define EDDI_HEADER_CLOSE
 #endif
 
 #endif // __EDDI_MACRO_H__
